@@ -17,7 +17,7 @@ npm install trendyol-api
 
 ## 🛠️ Usage
 
-Simply initialize a `TrendyolClient` and use the API modules exposed as properties on the client instance. For example:
+Simply initialize a `TrendyolClient` and use its API modules via the exposed properties. For example:
 
 ### 1️⃣ Initialize the Client
 ```typescript
@@ -73,3 +73,10 @@ npm test
 
 ## 📜 License
 MIT
+
+## Repository & Contributions
+
+This project is open source. You can find the repository at:  
+https://github.com/hberkaykuran/trendyol-api
+
+Contributions are welcome! Please fork the repository, create a new branch for your changes, and submit a pull request. For major changes, open an issue first to discuss your proposed improvements.
