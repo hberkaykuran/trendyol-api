@@ -2,8 +2,10 @@
 
 A **framework-agnostic**, **fully typed**, and **customizable** TypeScript API client for **Trendyol Integration API**.
 
+> **⚠️ Disclaimer:** This package is under **active development** and is **nowhere near production-ready**. Use at your own risk, and thoroughly test before relying on it in a production environment.
+
 ## 🚀 Features
-- 📌 **Supports Products, Orders, Finance, and Webhooks**
+- 📌 **Supports Products, Orders, and Finance**
 - 🔄 **Customizable HTTP client (Axios, Fetch, etc.)**
 - ✅ **Strict TypeScript types for safe API interactions**
 - 🔧 **Works in Node.js, Next.js, Express, NestJS, Deno, etc.**
@@ -14,6 +16,9 @@ npm install trendyol-api
 ```
 
 ## 🛠️ Usage
+
+Simply initialize a `TrendyolClient` and use the API modules exposed as properties on the client instance. For example:
+
 ### 1️⃣ Initialize the Client
 ```typescript
 import { TrendyolClient } from "trendyol-api";
@@ -24,62 +29,47 @@ const client = new TrendyolClient({
   apiSecret: "your-api-secret",
 });
 ```
+
 ### 2️⃣ Fetch Products
 ```typescript
-import { TrendyolProductAPI } from "trendyol-api";
-
-const productAPI = new TrendyolProductAPI(client);
-
 async function fetchProducts() {
-  const products = await productAPI.getProducts();
+  const products = await client.products.getProducts();
   console.log(products);
 }
 
 fetchProducts();
 ```
+
 ### 3️⃣ Fetch Orders
 ```typescript
-import { TrendyolOrderAPI } from "trendyol-api";
-
-const orderAPI = new TrendyolOrderAPI(client);
-
 async function fetchOrders() {
-  const orders = await orderAPI.getOrders();
+  const orders = await client.orders.getShipmentPackages({
+    startDate: "2024-01-01",
+    endDate: "2024-01-14",
+    status: "Created"
+  });
   console.log(orders);
 }
 
 fetchOrders();
 ```
+
 ### 4️⃣ Use Finance API
 ```typescript
-import { TrendyolFinanceAPI } from "trendyol-api";
-
-const financeAPI = new TrendyolFinanceAPI(client);
-
 async function fetchSettlements() {
-  const settlements = await financeAPI.getSettlements("2024-01-01", "2024-02-01");
+  const settlements = await client.finance.getSettlements("2024-01-01", "2024-01-15");
   console.log(settlements);
 }
 
 fetchSettlements();
 ```
-### 5️⃣ Register a Webhook
-```typescript
-import { TrendyolWebhookAPI } from "trendyol-api";
 
-const webhookAPI = new TrendyolWebhookAPI(client);
-
-async function registerWebhook() {
-  await webhookAPI.registerWebhook("https://your-site.com/webhook", ["Created", "Shipped"]);
-}
-
-registerWebhook();
-```
 ## ✅ Testing
 Run tests with:
 
 ```sh
 npm test
 ```
+
 ## 📜 License
 MIT
