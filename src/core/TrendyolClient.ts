@@ -1,12 +1,26 @@
-// src/core/TrendyolClient.ts
 import axios, { AxiosInstance } from "axios";
+import { TrendyolProductAPI } from "../api/products";
+import { TrendyolOrderAPI } from "../api/orders";
+import { TrendyolFinanceAPI } from "../api/finance";
 
+/**
+ * Configuration options for initializing the Trendyol API client.
+ */
 export interface TrendyolClientConfig {
+  /** The unique seller ID provided by Trendyol. */
   sellerId: number;
+
+  /** The API key used for authentication. */
   apiKey: string;
+
+  /** The API secret used for authentication. */
   apiSecret: string;
+
+  /** Optional: Base URL for Trendyol API requests (defaults to the production URL). */
   baseUrl?: string;
-  customFetcher?: AxiosInstance; // Allow custom HTTP clients (e.g., Fetch, SuperAgent)
+
+  /** Optional: A custom Axios instance for making requests. */
+  customFetcher?: AxiosInstance;
 }
 
 export class TrendyolClient {
@@ -15,6 +29,10 @@ export class TrendyolClient {
   private apiSecret: string;
   private baseUrl: string;
   private client: AxiosInstance;
+
+  public products: TrendyolProductAPI;
+  public orders: TrendyolOrderAPI;
+  public finance: TrendyolFinanceAPI;
 
   constructor(config: TrendyolClientConfig) {
     this.sellerId = config.sellerId;
@@ -34,9 +52,13 @@ export class TrendyolClient {
           "User-Agent": `${this.sellerId} - SelfIntegration`,
         },
       });
+
+    // Attach API modules to the main client
+    this.products = new TrendyolProductAPI(this);
+    this.orders = new TrendyolOrderAPI(this);
+    this.finance = new TrendyolFinanceAPI(this);
   }
 
-  // ✅ Getter for sellerId
   public getSellerId(): number {
     return this.sellerId;
   }
