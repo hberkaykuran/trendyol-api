@@ -1,5 +1,5 @@
 // src/api/orders/returnTestOrdersToWaitingInAction.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IReturnTestOrderToWaitingInActionRequest,
   IReturnTestOrderToWaitingInActionResponse,
@@ -10,11 +10,11 @@ import {
  * Endpoint: PUT /test/order/sellers/{sellerId}/claims/waiting-in-action
  */
 export async function returnTestOrdersToWaitingInAction(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   body: IReturnTestOrderToWaitingInActionRequest
 ): Promise<IReturnTestOrderToWaitingInActionResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IReturnTestOrderToWaitingInActionResponse>(
+  const { sellerId, request } = deps;
+  return request<IReturnTestOrderToWaitingInActionResponse>(
     "PUT",
     `/test/order/sellers/${sellerId}/claims/waiting-in-action`,
     body

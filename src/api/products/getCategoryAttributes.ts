@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { GetCategoryAttributesResponse } from "../../types/products.types";
 
 /**
@@ -7,11 +7,12 @@ import { GetCategoryAttributesResponse } from "../../types/products.types";
  * @throws {Error} If `categoryId` is not provided.
  */
 export async function getCategoryAttributes(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   categoryId: number
 ): Promise<GetCategoryAttributesResponse> {
   if (!categoryId) throw new Error("Category ID must be provided.");
-  return this.request(
+  const { request } = deps;
+  return request(
     "GET",
     `/integration/product/product-categories/${categoryId}/attributes`
   );

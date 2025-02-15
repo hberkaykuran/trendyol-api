@@ -1,5 +1,5 @@
 // src/api/orders/deleteInvoiceLink.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IDeleteInvoiceLinkRequest,
   IDeleteInvoiceLinkResponse,
@@ -10,11 +10,11 @@ import {
  * Endpoint: POST /sellers/{sellerId}/seller-invoice-links/delete
  */
 export async function deleteInvoiceLink(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   body: IDeleteInvoiceLinkRequest
 ): Promise<IDeleteInvoiceLinkResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IDeleteInvoiceLinkResponse>(
+  const { sellerId, request } = deps;
+  return request<IDeleteInvoiceLinkResponse>(
     "POST",
     `/sellers/${sellerId}/seller-invoice-links/delete`,
     body

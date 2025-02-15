@@ -1,5 +1,5 @@
 // src/api/orders/sendInvoiceLink.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   ISendInvoiceLinkRequest,
   ISendInvoiceLinkResponse,
@@ -10,11 +10,11 @@ import {
  * Endpoint: POST /sellers/{sellerId}/seller-invoice-links
  */
 export async function sendInvoiceLink(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   body: ISendInvoiceLinkRequest
 ): Promise<ISendInvoiceLinkResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<ISendInvoiceLinkResponse>(
+  const { sellerId, request } = deps;
+  return request<ISendInvoiceLinkResponse>(
     "POST",
     `/sellers/${sellerId}/seller-invoice-links`,
     body

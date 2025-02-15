@@ -1,4 +1,5 @@
 import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   FilterProductsParams,
   ProductResponse,
@@ -12,10 +13,10 @@ import { convertToTimestamp } from "../../utils/convertToTimestamp";
  * Filters include barcode, stock code, approval status, blacklist status, and more.
  */
 export async function filterProducts(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   params?: FilterProductsParams
 ): Promise<ProductResponse> {
-  const sellerId = this.getSellerId();
+  const { sellerId, request } = deps;
   const queryParams = new URLSearchParams();
 
   if (params?.page !== undefined)
@@ -58,8 +59,6 @@ export async function filterProducts(
   const queryString = queryParams.toString()
     ? `?${queryParams.toString()}`
     : "";
-  return this.request(
-    "GET",
-    `/product/sellers/${sellerId}/products${queryString}`
-  );
+
+  return request("GET", `/product/sellers/${sellerId}/products${queryString}`);
 }

@@ -1,5 +1,5 @@
 // src/api/orders/deliveredByService.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { IDeliveredByServiceResponse } from "../../types/orders.types";
 
 /**
@@ -7,11 +7,11 @@ import { IDeliveredByServiceResponse } from "../../types/orders.types";
  * Endpoint: PUT /order/sellers/{sellerId}/manual-deliver/{cargoTrackingNumber}
  */
 export async function deliveredByService(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   cargoTrackingNumber: string
 ): Promise<IDeliveredByServiceResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IDeliveredByServiceResponse>(
+  const { sellerId, request } = deps;
+  return request<IDeliveredByServiceResponse>(
     "PUT",
     `/order/sellers/${sellerId}/manual-deliver/${cargoTrackingNumber}`
   );

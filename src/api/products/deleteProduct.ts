@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { DeleteProductRequest } from "../../types/products.types";
 
 /**
@@ -11,7 +11,7 @@ import { DeleteProductRequest } from "../../types/products.types";
  * @throws {Error} If no barcodes are provided or if any barcode exceeds 40 characters.
  */
 export async function deleteProduct(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   deleteProductData: DeleteProductRequest
 ): Promise<{ batchRequestId: string }> {
   if (deleteProductData.items.length === 0)
@@ -20,8 +20,8 @@ export async function deleteProduct(
     if (item.barcode.length > 40)
       throw new Error("Barcode cannot exceed 40 characters.");
   }
-  const sellerId = this.getSellerId();
-  return this.request(
+  const { sellerId, request } = deps;
+  return request(
     "DELETE",
     `/product/sellers/${sellerId}/products`,
     deleteProductData

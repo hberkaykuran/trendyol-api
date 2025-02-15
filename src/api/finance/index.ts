@@ -1,32 +1,26 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+// src/api/finance/TrendyolFinanceAPI.ts
+import { ClientDependencies, BoundFunction } from "../../types/core.types";
 import { getSettlements } from "./getSettlements";
 import { getOtherFinancials } from "./getOtherFinancials";
 import { getCargoInvoiceDetails } from "./getCargoInvoiceDetails";
 
-/**
- * Provides an interface for retrieving financial data from Trendyol.
- *
- * This API allows fetching settlements, other financial transactions, and cargo invoice details.
- */
-export class TrendyolFinanceAPI extends TrendyolClient {
-  constructor(client: TrendyolClient) {
-    super({
-      sellerId: client.getSellerId(),
-      apiKey: client["apiKey"],
-      apiSecret: client["apiSecret"],
-      baseUrl: client["baseUrl"],
-      customFetcher: client["client"],
-    });
+export class TrendyolFinanceAPI {
+  public getSettlements: BoundFunction<typeof getSettlements>;
+  public getOtherFinancials: BoundFunction<typeof getOtherFinancials>;
+  public getCargoInvoiceDetails: BoundFunction<typeof getCargoInvoiceDetails>;
 
-    // ✅ Explicitly cast `this` to `TrendyolClient` to fix TypeScript error
-    this.getSettlements = getSettlements.bind(client as TrendyolClient);
-    this.getOtherFinancials = getOtherFinancials.bind(client as TrendyolClient);
-    this.getCargoInvoiceDetails = getCargoInvoiceDetails.bind(
-      client as TrendyolClient
-    );
+  constructor(private deps: ClientDependencies) {
+    this.getSettlements = ((...args) =>
+      getSettlements(this.deps, ...args)) as BoundFunction<
+      typeof getSettlements
+    >;
+    this.getOtherFinancials = ((...args) =>
+      getOtherFinancials(this.deps, ...args)) as BoundFunction<
+      typeof getOtherFinancials
+    >;
+    this.getCargoInvoiceDetails = ((...args) =>
+      getCargoInvoiceDetails(this.deps, ...args)) as BoundFunction<
+      typeof getCargoInvoiceDetails
+    >;
   }
-
-  getSettlements: typeof getSettlements;
-  getOtherFinancials: typeof getOtherFinancials;
-  getCargoInvoiceDetails: typeof getCargoInvoiceDetails;
 }

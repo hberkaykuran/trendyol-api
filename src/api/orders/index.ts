@@ -1,8 +1,5 @@
 // src/api/orders/TrendyolOrderAPI.ts
-
-import { TrendyolClient } from "../../core/TrendyolClient";
-
-// Import your order functions here:
+import { ClientDependencies, BoundFunction } from "../../types/core.types";
 import { getShipmentPackages } from "./getShipmentPackages";
 import { updateTrackingNumber } from "./updateTrackingNumber";
 import { notifyPackages } from "./notifyPackages";
@@ -20,76 +17,96 @@ import { statusUpdatesOnTestOrders } from "./statusUpdatesOnTestOrders";
 import { createTestOrder } from "./createTestOrder";
 import { returnTestOrdersToWaitingInAction } from "./returnTestOrdersToWaitingInAction";
 
-/**
- * Provides an interface for all Order-related endpoints in the Trendyol API.
- *
- * Each method is bound to the underlying TrendyolClient to reuse the same
- * configuration, headers, and authentication.
- */
-export class TrendyolOrderAPI extends TrendyolClient {
-  constructor(client: TrendyolClient) {
-    // Reuse the parent's config
-    super({
-      sellerId: client.getSellerId(),
-      apiKey: client["apiKey"],
-      apiSecret: client["apiSecret"],
-      baseUrl: client["baseUrl"],
-      customFetcher: client["client"],
-    });
+export class TrendyolOrderAPI {
+  public getShipmentPackages: BoundFunction<typeof getShipmentPackages>;
+  public updateTrackingNumber: BoundFunction<typeof updateTrackingNumber>;
+  public notifyPackages: BoundFunction<typeof notifyPackages>;
+  public cancelOrderPackageItem: BoundFunction<typeof cancelOrderPackageItem>;
+  public sendInvoiceLink: BoundFunction<typeof sendInvoiceLink>;
+  public deleteInvoiceLink: BoundFunction<typeof deleteInvoiceLink>;
+  public splitShipmentPackage: BoundFunction<typeof splitShipmentPackage>;
+  public updateBoxInfo: BoundFunction<typeof updateBoxInfo>;
+  public shippingAlternativeDelivery: BoundFunction<
+    typeof shippingAlternativeDelivery
+  >;
+  public deliveredByService: BoundFunction<typeof deliveredByService>;
+  public changeCargoProvider: BoundFunction<typeof changeCargoProvider>;
+  public updateWarehouseInformation: BoundFunction<
+    typeof updateWarehouseInformation
+  >;
+  public additionalSupplyTimeDefinition: BoundFunction<
+    typeof additionalSupplyTimeDefinition
+  >;
+  public statusUpdatesOnTestOrders: BoundFunction<
+    typeof statusUpdatesOnTestOrders
+  >;
+  public createTestOrder: BoundFunction<typeof createTestOrder>;
+  public returnTestOrdersToWaitingInAction: BoundFunction<
+    typeof returnTestOrdersToWaitingInAction
+  >;
 
-    // Bind each function to the original TrendyolClient:
-    this.getShipmentPackages = getShipmentPackages.bind(
-      client as TrendyolClient
-    );
-    this.updateTrackingNumber = updateTrackingNumber.bind(
-      client as TrendyolClient
-    );
-    this.notifyPackages = notifyPackages.bind(client as TrendyolClient);
-    this.cancelOrderPackageItem = cancelOrderPackageItem.bind(
-      client as TrendyolClient
-    );
-    this.sendInvoiceLink = sendInvoiceLink.bind(client as TrendyolClient);
-    this.deleteInvoiceLink = deleteInvoiceLink.bind(client as TrendyolClient);
-    this.splitShipmentPackage = splitShipmentPackage.bind(
-      client as TrendyolClient
-    );
-    this.updateBoxInfo = updateBoxInfo.bind(client as TrendyolClient);
-    this.shippingAlternativeDelivery = shippingAlternativeDelivery.bind(
-      client as TrendyolClient
-    );
-    this.deliveredByService = deliveredByService.bind(client as TrendyolClient);
-    this.changeCargoProvider = changeCargoProvider.bind(
-      client as TrendyolClient
-    );
-    this.updateWarehouseInformation = updateWarehouseInformation.bind(
-      client as TrendyolClient
-    );
-    this.additionalSupplyTimeDefinition = additionalSupplyTimeDefinition.bind(
-      client as TrendyolClient
-    );
-    this.statusUpdatesOnTestOrders = statusUpdatesOnTestOrders.bind(
-      client as TrendyolClient
-    );
-    this.createTestOrder = createTestOrder.bind(client as TrendyolClient);
-    this.returnTestOrdersToWaitingInAction =
-      returnTestOrdersToWaitingInAction.bind(client as TrendyolClient);
+  constructor(private deps: ClientDependencies) {
+    this.getShipmentPackages = ((...args) =>
+      getShipmentPackages(this.deps, ...args)) as BoundFunction<
+      typeof getShipmentPackages
+    >;
+    this.updateTrackingNumber = ((...args) =>
+      updateTrackingNumber(this.deps, ...args)) as BoundFunction<
+      typeof updateTrackingNumber
+    >;
+    this.notifyPackages = ((...args) =>
+      notifyPackages(this.deps, ...args)) as BoundFunction<
+      typeof notifyPackages
+    >;
+    this.cancelOrderPackageItem = ((...args) =>
+      cancelOrderPackageItem(this.deps, ...args)) as BoundFunction<
+      typeof cancelOrderPackageItem
+    >;
+    this.sendInvoiceLink = ((...args) =>
+      sendInvoiceLink(this.deps, ...args)) as BoundFunction<
+      typeof sendInvoiceLink
+    >;
+    this.deleteInvoiceLink = ((...args) =>
+      deleteInvoiceLink(this.deps, ...args)) as BoundFunction<
+      typeof deleteInvoiceLink
+    >;
+    this.splitShipmentPackage = ((...args) =>
+      splitShipmentPackage(this.deps, ...args)) as BoundFunction<
+      typeof splitShipmentPackage
+    >;
+    this.updateBoxInfo = ((...args) =>
+      updateBoxInfo(this.deps, ...args)) as BoundFunction<typeof updateBoxInfo>;
+    this.shippingAlternativeDelivery = ((...args) =>
+      shippingAlternativeDelivery(this.deps, ...args)) as BoundFunction<
+      typeof shippingAlternativeDelivery
+    >;
+    this.deliveredByService = ((...args) =>
+      deliveredByService(this.deps, ...args)) as BoundFunction<
+      typeof deliveredByService
+    >;
+    this.changeCargoProvider = ((...args) =>
+      changeCargoProvider(this.deps, ...args)) as BoundFunction<
+      typeof changeCargoProvider
+    >;
+    this.updateWarehouseInformation = ((...args) =>
+      updateWarehouseInformation(this.deps, ...args)) as BoundFunction<
+      typeof updateWarehouseInformation
+    >;
+    this.additionalSupplyTimeDefinition = ((...args) =>
+      additionalSupplyTimeDefinition(this.deps, ...args)) as BoundFunction<
+      typeof additionalSupplyTimeDefinition
+    >;
+    this.statusUpdatesOnTestOrders = ((...args) =>
+      statusUpdatesOnTestOrders(this.deps, ...args)) as BoundFunction<
+      typeof statusUpdatesOnTestOrders
+    >;
+    this.createTestOrder = ((...args) =>
+      createTestOrder(this.deps, ...args)) as BoundFunction<
+      typeof createTestOrder
+    >;
+    this.returnTestOrdersToWaitingInAction = ((...args) =>
+      returnTestOrdersToWaitingInAction(this.deps, ...args)) as BoundFunction<
+      typeof returnTestOrdersToWaitingInAction
+    >;
   }
-
-  // Then declare the function properties on the class:
-  public getShipmentPackages: typeof getShipmentPackages;
-  public updateTrackingNumber: typeof updateTrackingNumber;
-  public notifyPackages: typeof notifyPackages;
-  public cancelOrderPackageItem: typeof cancelOrderPackageItem;
-  public sendInvoiceLink: typeof sendInvoiceLink;
-  public deleteInvoiceLink: typeof deleteInvoiceLink;
-  public splitShipmentPackage: typeof splitShipmentPackage;
-  public updateBoxInfo: typeof updateBoxInfo;
-  public shippingAlternativeDelivery: typeof shippingAlternativeDelivery;
-  public deliveredByService: typeof deliveredByService;
-  public changeCargoProvider: typeof changeCargoProvider;
-  public updateWarehouseInformation: typeof updateWarehouseInformation;
-  public additionalSupplyTimeDefinition: typeof additionalSupplyTimeDefinition;
-  public statusUpdatesOnTestOrders: typeof statusUpdatesOnTestOrders;
-  public createTestOrder: typeof createTestOrder;
-  public returnTestOrdersToWaitingInAction: typeof returnTestOrdersToWaitingInAction;
 }

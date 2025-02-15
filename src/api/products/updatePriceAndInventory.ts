@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { UpdatePriceAndInventoryRequest } from "../../types/products.types";
 
 /**
@@ -10,7 +10,7 @@ import { UpdatePriceAndInventoryRequest } from "../../types/products.types";
  * @throws {Error} If any validation fails.
  */
 export async function updatePriceAndInventory(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   priceAndStockData: UpdatePriceAndInventoryRequest
 ): Promise<{ batchRequestId: string }> {
   if (priceAndStockData.items.length > 1000)
@@ -27,8 +27,8 @@ export async function updatePriceAndInventory(
         "List price must be greater than or equal to sale price."
       );
   }
-  const sellerId = this.getSellerId();
-  return this.request(
+  const { sellerId, request } = deps;
+  return request(
     "POST",
     `/inventory/sellers/${sellerId}/products/price-and-inventory`,
     priceAndStockData

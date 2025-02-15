@@ -1,5 +1,5 @@
 // src/api/orders/additionalSupplyTimeDefinition.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IAdditionalSupplyTimeRequest,
   IAdditionalSupplyTimeResponse,
@@ -10,12 +10,12 @@ import {
  * Endpoint: PUT /order/sellers/{sellerId}/shipment-packages/{packageId}/extended-agreed-delivery-date
  */
 export async function additionalSupplyTimeDefinition(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: IAdditionalSupplyTimeRequest
 ): Promise<IAdditionalSupplyTimeResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IAdditionalSupplyTimeResponse>(
+  const { sellerId, request } = deps;
+  return request<IAdditionalSupplyTimeResponse>(
     "PUT",
     `/order/sellers/${sellerId}/shipment-packages/${packageId}/extended-agreed-delivery-date`,
     body

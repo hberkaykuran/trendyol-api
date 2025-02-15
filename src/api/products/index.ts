@@ -1,4 +1,5 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+// src/api/products/TrendyolProductAPI.ts
+import { ClientDependencies, BoundFunction } from "../../types/core.types";
 import { filterProducts } from "./filterProducts";
 import { createProduct } from "./createProduct";
 import { updateProduct } from "./updateProduct";
@@ -10,40 +11,50 @@ import { getCategoryTree } from "./getCategoryTree";
 import { getCategoryAttributes } from "./getCategoryAttributes";
 import { getSuppliersAddresses } from "./getSuppliersAddresses";
 
-/**
- * Provides an interface for managing products on Trendyol.
- *
- * This API allows operations such as filtering, creating, updating, and deleting products.
- */
-export class TrendyolProductAPI extends TrendyolClient {
-  public filterProducts: typeof filterProducts;
-  public createProduct: typeof createProduct;
-  public updateProduct: typeof updateProduct;
-  public deleteProduct: typeof deleteProduct;
-  public updatePriceAndInventory: typeof updatePriceAndInventory;
-  public getBatchRequestResult: typeof getBatchRequestResult;
-  public getBrands: typeof getBrands;
-  public getCategoryTree: typeof getCategoryTree;
-  public getCategoryAttributes: typeof getCategoryAttributes;
-  public getSuppliersAddresses: typeof getSuppliersAddresses;
+export class TrendyolProductAPI {
+  public filterProducts: BoundFunction<typeof filterProducts>;
+  public createProduct: BoundFunction<typeof createProduct>;
+  public updateProduct: BoundFunction<typeof updateProduct>;
+  public deleteProduct: BoundFunction<typeof deleteProduct>;
+  public updatePriceAndInventory: BoundFunction<typeof updatePriceAndInventory>;
+  public getBatchRequestResult: BoundFunction<typeof getBatchRequestResult>;
+  public getBrands: BoundFunction<typeof getBrands>;
+  public getCategoryTree: BoundFunction<typeof getCategoryTree>;
+  public getCategoryAttributes: BoundFunction<typeof getCategoryAttributes>;
+  public getSuppliersAddresses: BoundFunction<typeof getSuppliersAddresses>;
 
-  constructor(client: TrendyolClient) {
-    super({
-      sellerId: client.getSellerId(),
-      apiKey: client["apiKey"],
-      apiSecret: client["apiSecret"],
-      baseUrl: client["baseUrl"],
-      customFetcher: client["client"],
-    });
-    this.filterProducts = filterProducts.bind(client);
-    this.createProduct = createProduct.bind(client);
-    this.updateProduct = updateProduct.bind(client);
-    this.deleteProduct = deleteProduct.bind(client);
-    this.updatePriceAndInventory = updatePriceAndInventory.bind(client);
-    this.getBatchRequestResult = getBatchRequestResult.bind(client);
-    this.getBrands = getBrands.bind(client);
-    this.getCategoryTree = getCategoryTree.bind(client);
-    this.getCategoryAttributes = getCategoryAttributes.bind(client);
-    this.getSuppliersAddresses = getSuppliersAddresses.bind(client);
+  constructor(private deps: ClientDependencies) {
+    this.filterProducts = ((...args) =>
+      filterProducts(this.deps, ...args)) as BoundFunction<
+      typeof filterProducts
+    >;
+    this.createProduct = ((...args) =>
+      createProduct(this.deps, ...args)) as BoundFunction<typeof createProduct>;
+    this.updateProduct = ((...args) =>
+      updateProduct(this.deps, ...args)) as BoundFunction<typeof updateProduct>;
+    this.deleteProduct = ((...args) =>
+      deleteProduct(this.deps, ...args)) as BoundFunction<typeof deleteProduct>;
+    this.updatePriceAndInventory = ((...args) =>
+      updatePriceAndInventory(this.deps, ...args)) as BoundFunction<
+      typeof updatePriceAndInventory
+    >;
+    this.getBatchRequestResult = ((...args) =>
+      getBatchRequestResult(this.deps, ...args)) as BoundFunction<
+      typeof getBatchRequestResult
+    >;
+    this.getBrands = ((...args) =>
+      getBrands(this.deps, ...args)) as BoundFunction<typeof getBrands>;
+    this.getCategoryTree = ((...args) =>
+      getCategoryTree(this.deps, ...args)) as BoundFunction<
+      typeof getCategoryTree
+    >;
+    this.getCategoryAttributes = ((...args) =>
+      getCategoryAttributes(this.deps, ...args)) as BoundFunction<
+      typeof getCategoryAttributes
+    >;
+    this.getSuppliersAddresses = ((...args) =>
+      getSuppliersAddresses(this.deps, ...args)) as BoundFunction<
+      typeof getSuppliersAddresses
+    >;
   }
 }

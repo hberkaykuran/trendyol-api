@@ -1,25 +1,16 @@
+// src/core/TrendyolClient.ts
 import axios, { AxiosInstance } from "axios";
-import { TrendyolProductAPI } from "../api/products";
+
+import { RequestFn, ClientDependencies } from "../types/core.types";
 import { TrendyolOrderAPI } from "../api/orders";
+import { TrendyolProductAPI } from "../api/products";
 import { TrendyolFinanceAPI } from "../api/finance";
 
-/**
- * Configuration options for initializing the Trendyol API client.
- */
 export interface TrendyolClientConfig {
-  /** The unique seller ID provided by Trendyol. */
   sellerId: number;
-
-  /** The API key used for authentication. */
   apiKey: string;
-
-  /** The API secret used for authentication. */
   apiSecret: string;
-
-  /** Optional: Base URL for Trendyol API requests (defaults to the production URL). */
   baseUrl?: string;
-
-  /** Optional: A custom Axios instance for making requests. */
   customFetcher?: AxiosInstance;
 }
 
@@ -30,8 +21,8 @@ export class TrendyolClient {
   private baseUrl: string;
   private client: AxiosInstance;
 
-  public products: TrendyolProductAPI;
   public orders: TrendyolOrderAPI;
+  public products: TrendyolProductAPI;
   public finance: TrendyolFinanceAPI;
 
   constructor(config: TrendyolClientConfig) {
@@ -53,14 +44,16 @@ export class TrendyolClient {
         },
       });
 
-    // Attach API modules to the main client
-    this.products = new TrendyolProductAPI(this);
-    this.orders = new TrendyolOrderAPI(this);
-    this.finance = new TrendyolFinanceAPI(this);
-  }
+    // Create a dependency object with only what's needed.
+    const dependencies: ClientDependencies = {
+      request: this.request.bind(this),
+      sellerId: this.sellerId,
+    };
 
-  public getSellerId(): number {
-    return this.sellerId;
+    // Pass the dependencies object to your modules.
+    this.orders = new TrendyolOrderAPI(dependencies);
+    this.products = new TrendyolProductAPI(dependencies);
+    this.finance = new TrendyolFinanceAPI(dependencies);
   }
 
   public async request<T>(

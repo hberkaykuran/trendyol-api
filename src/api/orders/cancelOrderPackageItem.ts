@@ -1,6 +1,5 @@
 // src/api/orders/cancelOrderPackageItem.ts
-
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   ICancelOrderPackageItemRequest,
   ICancelOrderPackageItemResponse,
@@ -11,12 +10,12 @@ import {
  * Endpoint: PUT /order/sellers/{sellerId}/shipment-packages/{packageId}/items/unsupplied
  */
 export async function cancelOrderPackageItem(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: ICancelOrderPackageItemRequest
 ): Promise<ICancelOrderPackageItemResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<ICancelOrderPackageItemResponse>(
+  const { sellerId, request } = deps;
+  return request<ICancelOrderPackageItemResponse>(
     "PUT",
     `/order/sellers/${sellerId}/shipment-packages/${packageId}/items/unsupplied`,
     body

@@ -1,5 +1,5 @@
 // src/api/orders/splitShipmentPackage.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   ISplitShipmentPackageRequest,
   ISplitShipmentPackageResponse,
@@ -10,12 +10,12 @@ import {
  * Endpoint: POST /order/sellers/{sellerId}/shipment-packages/{packageId}/split-packages
  */
 export async function splitShipmentPackage(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: ISplitShipmentPackageRequest
 ): Promise<ISplitShipmentPackageResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<ISplitShipmentPackageResponse>(
+  const { sellerId, request } = deps;
+  return request<ISplitShipmentPackageResponse>(
     "POST",
     `/order/sellers/${sellerId}/shipment-packages/${packageId}/split-packages`,
     body

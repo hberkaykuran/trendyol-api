@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   OtherFinancialsResponse,
   OtherFinancialsParams,
@@ -13,7 +13,7 @@ import {
  * @throws {Error} If required parameters are missing or invalid.
  */
 export async function getOtherFinancials(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   params: OtherFinancialsParams
 ): Promise<OtherFinancialsResponse> {
   if (!params.startDate || !params.endDate)
@@ -28,7 +28,7 @@ export async function getOtherFinancials(
       "transactionType is required and only one type can be used per request."
     );
 
-  const sellerId = this.getSellerId();
+  const { sellerId, request } = deps;
   const queryParams = new URLSearchParams();
 
   if (params.startDate)
@@ -41,7 +41,7 @@ export async function getOtherFinancials(
   if (params.size !== undefined)
     queryParams.append("size", params.size.toString());
 
-  return this.request(
+  return request(
     "GET",
     `/integration/finance/che/sellers/${sellerId}/otherfinancials?${queryParams.toString()}`
   );

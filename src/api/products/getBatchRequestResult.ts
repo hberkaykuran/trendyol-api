@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { BatchRequestResult } from "../../types/products.types";
 
 /**
@@ -6,14 +6,14 @@ import { BatchRequestResult } from "../../types/products.types";
  *
  * @throws {Error} If `batchRequestId` is not provided.
  */
-
 export async function getBatchRequestResult(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   batchRequestId: string
 ): Promise<BatchRequestResult> {
   if (!batchRequestId) throw new Error("Batch request ID must be provided.");
-  const sellerId = this.getSellerId();
-  return this.request(
+
+  const { sellerId, request } = deps;
+  return request<BatchRequestResult>(
     "GET",
     `/product/sellers/${sellerId}/products/batch-requests/${batchRequestId}`
   );

@@ -1,5 +1,5 @@
 // src/api/orders/updateWarehouseInformation.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IUpdateWarehouseRequest,
   IUpdateWarehouseResponse,
@@ -10,12 +10,12 @@ import {
  * Endpoint: PUT /order/sellers/{sellerId}/shipment-packages/{packageId}/warehouse
  */
 export async function updateWarehouseInformation(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: IUpdateWarehouseRequest
 ): Promise<IUpdateWarehouseResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IUpdateWarehouseResponse>(
+  const { sellerId, request } = deps;
+  return request<IUpdateWarehouseResponse>(
     "PUT",
     `/order/sellers/${sellerId}/shipment-packages/${packageId}/warehouse`,
     body

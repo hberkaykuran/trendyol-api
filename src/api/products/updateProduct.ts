@@ -1,4 +1,4 @@
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import { Product } from "../../types/products.types";
 
 /**
@@ -11,7 +11,7 @@ import { Product } from "../../types/products.types";
  * @throws {Error} If any product fails validation (e.g., barcode exceeds 40 characters).
  */
 export async function updateProduct(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   productData: {
     items: Product[];
   }
@@ -32,10 +32,6 @@ export async function updateProduct(
       throw new Error("Description cannot exceed 30,000 characters.");
     if (product.images.length > 8) throw new Error("Maximum 8 images allowed.");
   }
-  const sellerId = this.getSellerId();
-  return this.request(
-    "PUT",
-    `/product/sellers/${sellerId}/products`,
-    productData
-  );
+  const { sellerId, request } = deps;
+  return request("PUT", `/product/sellers/${sellerId}/products`, productData);
 }

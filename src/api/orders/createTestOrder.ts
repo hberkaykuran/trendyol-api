@@ -1,5 +1,5 @@
 // src/api/orders/createTestOrder.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   ICreateTestOrderRequest,
   ICreateTestOrderResponse,
@@ -10,7 +10,7 @@ import {
  * Endpoint: POST /test/order/orders/core
  */
 export async function createTestOrder(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   body: ICreateTestOrderRequest
 ): Promise<ICreateTestOrderResponse> {
   if (
@@ -29,7 +29,9 @@ export async function createTestOrder(
   if (!body.lines || body.lines.length === 0) {
     throw new Error("At least one order line is required.");
   }
-  return this.request<ICreateTestOrderResponse>(
+
+  const { request } = deps;
+  return request<ICreateTestOrderResponse>(
     "POST",
     `/test/order/orders/core`,
     body

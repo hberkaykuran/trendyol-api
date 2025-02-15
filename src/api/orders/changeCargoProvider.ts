@@ -1,5 +1,5 @@
 // src/api/orders/changeCargoProvider.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IChangeCargoProviderRequest,
   IChangeCargoProviderResponse,
@@ -10,12 +10,12 @@ import {
  * Endpoint: PUT /order/sellers/{sellerId}/shipment-packages/{packageId}/cargo-providers
  */
 export async function changeCargoProvider(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: IChangeCargoProviderRequest
 ): Promise<IChangeCargoProviderResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IChangeCargoProviderResponse>(
+  const { sellerId, request } = deps;
+  return request<IChangeCargoProviderResponse>(
     "PUT",
     `/order/sellers/${sellerId}/shipment-packages/${packageId}/cargo-providers`,
     body

@@ -1,5 +1,5 @@
 // src/api/orders/getShipmentPackages.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IGetOrderPackagesParams,
   IGetOrderPackagesResponse,
@@ -12,7 +12,7 @@ import { convertToTimestamp } from "../../utils/convertToTimestamp";
  *
  */
 export async function getShipmentPackages(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   params?: IGetOrderPackagesParams
 ): Promise<IGetOrderPackagesResponse> {
   const queryParams = new URLSearchParams();
@@ -63,8 +63,8 @@ export async function getShipmentPackages(
     }
   }
 
-  const sellerId = this.getSellerId();
-  return this.request<IGetOrderPackagesResponse>(
+  const { sellerId, request } = deps;
+  return request<IGetOrderPackagesResponse>(
     "GET",
     `/order/sellers/${sellerId}/orders?${queryParams.toString()}`
   );

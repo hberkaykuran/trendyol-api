@@ -1,5 +1,5 @@
 // src/api/orders/statusUpdatesOnTestOrders.ts
-import { TrendyolClient } from "../../core/TrendyolClient";
+import { ClientDependencies } from "../../types/core.types";
 import {
   IUpdateTestOrderStatusRequest,
   IUpdateTestOrderStatusResponse,
@@ -10,12 +10,12 @@ import {
  * Endpoint: PUT /test/order/sellers/{sellerId}/shipment-packages/{packageId}/status
  */
 export async function statusUpdatesOnTestOrders(
-  this: TrendyolClient,
+  deps: ClientDependencies,
   packageId: number,
   body: IUpdateTestOrderStatusRequest
 ): Promise<IUpdateTestOrderStatusResponse> {
-  const sellerId = this.getSellerId();
-  return this.request<IUpdateTestOrderStatusResponse>(
+  const { sellerId, request } = deps;
+  return request<IUpdateTestOrderStatusResponse>(
     "PUT",
     `/test/order/sellers/${sellerId}/shipment-packages/${packageId}/status`,
     body
