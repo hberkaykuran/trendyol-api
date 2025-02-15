@@ -37,7 +37,7 @@ export class TrendyolClient {
         baseURL: this.baseUrl,
         headers: {
           Authorization: `Basic ${Buffer.from(
-            `${this.sellerId}:${this.apiKey}:${this.apiSecret}`
+            `${this.apiKey}:${this.apiSecret}`
           ).toString("base64")}`,
           "Content-Type": "application/json",
           "User-Agent": `${this.sellerId} - SelfIntegration`,
