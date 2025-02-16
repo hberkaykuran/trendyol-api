@@ -1,5 +1,5 @@
 import { ClientDependencies } from "../../types/core.types";
-import { Product } from "../../types/products.types";
+import { ProductInput } from "../../types/products.types";
 
 /**
  * Updates product details in the Trendyol system.
@@ -13,7 +13,7 @@ import { Product } from "../../types/products.types";
 export async function updateProduct(
   deps: ClientDependencies,
   productData: {
-    items: Product[];
+    items: ProductInput[];
   }
 ): Promise<{ batchRequestId: string }> {
   if (productData.items.length > 1000)

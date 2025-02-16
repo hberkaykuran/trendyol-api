@@ -2,6 +2,81 @@
  * Represents a product in the Trendyol system.
  */
 export interface Product {
+  /** Unique ID of the product in Trendyol's system. */
+  id: string;
+  /** Whether the product is approved in the marketplace. */
+  approved: boolean;
+  /** Product code assigned by Trendyol. */
+  productCode: number;
+  /** Batch request ID associated with the product. */
+  batchRequestId: string;
+  /** Supplier ID of the product. */
+  supplierId: number;
+  /** Timestamp of when the product was created. */
+  createDateTime: number;
+  /** Timestamp of when the product was last updated. */
+  lastUpdateDate: number;
+  /** Gender classification for the product. */
+  gender?: string;
+  /** Brand name of the product. */
+  brand: string;
+  /** Unique barcode of the product. */
+  barcode: string;
+  /** Product title. */
+  title: string;
+  /** Category name of the product. */
+  categoryName: string;
+  /** Main product code, used for grouping variations. */
+  productMainId: string;
+  /** Description of the product. */
+  description: string;
+  /** Stock unit type (e.g., "Adet"). */
+  stockUnitType: string;
+  /** Available stock quantity for the product. */
+  quantity: number;
+  /** List price (crossed-out price). */
+  listPrice: number;
+  /** Sale price (current selling price). */
+  salePrice: number;
+  /** VAT rate applied to the product. */
+  vatRate: number;
+  /** Dimensional weight of the product. */
+  dimensionalWeight: number;
+  /** Unique stock code in the supplier’s system. */
+  stockCode: string;
+  /** Expected delivery duration in days. */
+  deliveryDuration?: number;
+  /** Express delivery options available for the product. */
+  deliveryOption?: {
+    deliveryDuration: number;
+    fastDeliveryType: "SAME_DAY_SHIPPING" | "FAST_DELIVERY";
+  };
+  /** List of product image URLs. */
+  images: {
+    url: string;
+  }[];
+  /** Attribute details of the product (e.g., color, size). */
+  attributes: {
+    attributeId: number;
+    attributeValueId?: number;
+    customAttributeValue?: string;
+  }[];
+  /** Variant attributes of the product (e.g., color, size). */
+  variantAttributes?: {
+    attributeName: string;
+    attributeValue: string;
+  }[];
+  /** Platform listing ID of the product. */
+  platformListingId: string;
+  /** Stock ID of the product. */
+  stockId: string;
+  /** Color description of the product. */
+  color?: string;
+  /** URL of the product on Trendyol. */
+  productUrl: string;
+}
+
+export interface ProductInput {
   /** Unique barcode of the product. Max 40 characters. */
   barcode: string;
   /** The product title. Max 100 characters. */
@@ -44,7 +119,9 @@ export interface Product {
     fastDeliveryType: "SAME_DAY_SHIPPING" | "FAST_DELIVERY";
   };
   /** List of product image URLs. Max 8 images. Must be HTTPS, 1200x1800px, 96dpi. */
-  images: { url: string }[];
+  images: {
+    url: string;
+  }[];
   /** Attribute details of the product (e.g., color, size). */
   attributes: {
     /** Attribute ID (provided by Trendyol). */
@@ -96,7 +173,7 @@ export interface BatchRequestResultBase {
 export interface UpdatePriceAndInventoryRequest {
   /** List of products to update stock and price. */
   items: Pick<
-    Product,
+    ProductInput,
     "barcode" | "quantity" | "salePrice" | "listPrice" | "currencyType"
   >[];
 }
@@ -106,7 +183,7 @@ export interface UpdatePriceAndInventoryRequest {
  */
 export interface DeleteProductRequest {
   /** List of barcodes for products to delete. */
-  items: Pick<Product, "barcode">[];
+  items: Pick<ProductInput, "barcode">[];
 }
 
 /**
@@ -275,7 +352,7 @@ export type BatchRequestResult =
       /** List of processed items and their statuses. */
       items?: {
         /** The product associated with the request. */
-        requestItem: Product;
+        requestItem: ProductInput;
         /** Status of the request item (Success/Fail). */
         status: "SUCCESS" | "FAIL";
         /** List of failure reasons if applicable. */
@@ -287,7 +364,7 @@ export type BatchRequestResult =
       batchRequestType: "UPDATE_PRODUCT";
       /** List of processed items and their statuses. */
       items?: {
-        requestItem: Product;
+        requestItem: ProductInput;
         status: "SUCCESS" | "FAIL";
         failureReasons?: string[];
       }[];
@@ -297,7 +374,7 @@ export type BatchRequestResult =
       batchRequestType: "DELETE_PRODUCT";
       /** List of processed items and their statuses. */
       items?: {
-        requestItem: Pick<Product, "barcode">;
+        requestItem: Pick<ProductInput, "barcode">;
         status: "SUCCESS" | "FAIL";
         failureReasons?: string[];
       }[];
@@ -308,7 +385,7 @@ export type BatchRequestResult =
       /** List of processed items and their statuses. */
       items?: {
         requestItem: Pick<
-          Product,
+          ProductInput,
           "barcode" | "quantity" | "salePrice" | "listPrice" | "currencyType"
         >;
         status: "SUCCESS" | "FAIL";

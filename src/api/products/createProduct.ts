@@ -1,5 +1,5 @@
 import { ClientDependencies } from "../../types/core.types";
-import { Product } from "../../types/products.types";
+import { ProductInput } from "../../types/products.types";
 
 /**
  * Creates new products in the Trendyol system.
@@ -12,7 +12,7 @@ import { Product } from "../../types/products.types";
  */
 export async function createProduct(
   deps: ClientDependencies,
-  productData: { items: Product[] }
+  productData: { items: ProductInput[] }
 ): Promise<{ batchRequestId: string }> {
   for (const product of productData.items) {
     if (product.barcode.length > 40)
