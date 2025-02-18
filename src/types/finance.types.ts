@@ -127,12 +127,29 @@ export interface OtherFinancialsParams {
  * Represents a single other financial transaction record.
  */
 export interface OtherFinancialItem {
-  transactionId: string;
-  transactionType: OtherFinancialTransactionType;
-  amount: number;
-  currency: string;
-  transactionDate: string;
-  description: string;
+  id: string;
+  transactionDate: number;
+  barcode: string | null;
+  transactionType: OtherFinancialTransactionType | string;
+  receiptId: string | null;
+  description: string | null;
+  debt: number;
+  credit: number;
+  paymentPeriod: string | null;
+  commissionRate: number | null;
+  commissionAmount: number | null;
+  commissionInvoiceSerialNumber: string | null;
+  sellerRevenue: number | null;
+  orderNumber: string | null;
+  paymentOrderId: number;
+  paymentDate: number | null;
+  sellerId: number;
+  storeId: number | null;
+  storeName: string | null;
+  storeAddress: string | null;
+  country: string;
+  orderDate: number;
+  affiliate: string;
 }
 
 /**
