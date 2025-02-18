@@ -9,5 +9,5 @@ export async function getBrands(
   deps: ClientDependencies
 ): Promise<GetBrandsResponse> {
   const { request } = deps;
-  return request("GET", `/integration/product/brands`);
+  return request("GET", `/product/brands`);
 }

@@ -43,6 +43,6 @@ export async function getOtherFinancials(
 
   return request(
     "GET",
-    `/integration/finance/che/sellers/${sellerId}/otherfinancials?${queryParams.toString()}`
+    `/finance/che/sellers/${sellerId}/otherfinancials?${queryParams.toString()}`
   );
 }

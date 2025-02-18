@@ -12,8 +12,5 @@ export async function getCategoryAttributes(
 ): Promise<GetCategoryAttributesResponse> {
   if (!categoryId) throw new Error("Category ID must be provided.");
   const { request } = deps;
-  return request(
-    "GET",
-    `/integration/product/product-categories/${categoryId}/attributes`
-  );
+  return request("GET", `/product/product-categories/${categoryId}/attributes`);
 }

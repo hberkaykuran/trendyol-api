@@ -8,5 +8,5 @@ export async function getSuppliersAddresses(
   deps: ClientDependencies
 ): Promise<GetSuppliersAddressesResponse> {
   const { sellerId, request } = deps;
-  return request("GET", `/integration/sellers/${sellerId}/addresses`);
+  return request("GET", `/sellers/${sellerId}/addresses`);
 }

@@ -8,5 +8,5 @@ export async function getCategoryTree(
   deps: ClientDependencies
 ): Promise<GetCategoryTreeResponse> {
   const { request } = deps;
-  return request("GET", `/integration/product/product-categories`);
+  return request("GET", `/product/product-categories`);
 }

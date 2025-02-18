@@ -11,6 +11,6 @@ export async function getCargoInvoiceDetails(
   const { sellerId, request } = deps;
   return request(
     "GET",
-    `/integration/finance/che/sellers/${sellerId}/cargo-invoice/${invoiceSerialNumber}/items`
+    `/finance/che/sellers/${sellerId}/cargo-invoice/${invoiceSerialNumber}/items`
   );
 }

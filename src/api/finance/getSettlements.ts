@@ -43,6 +43,6 @@ export async function getSettlements(
 
   return request(
     "GET",
-    `/integration/finance/che/sellers/${sellerId}/settlements?${queryParams.toString()}`
+    `/finance/che/sellers/${sellerId}/settlements?${queryParams.toString()}`
   );
 }
