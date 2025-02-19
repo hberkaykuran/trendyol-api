@@ -1,3 +1,5 @@
+[![npm version](https://img.shields.io/npm/v/@definitelynotl/trendyol-api.svg)](https://www.npmjs.com/package/@definitelynotl/trendyol-api)
+
 # Trendyol API Client (TypeScript)
 
 A **framework-agnostic**, **fully typed**, and **customizable** TypeScript API client for **Trendyol Integration API**.
